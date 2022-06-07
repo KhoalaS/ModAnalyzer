@@ -217,12 +217,16 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
             self.mod_apkname = temp[-1]
 
     def onExtract(self):
+        if self.mainfolder == '':
+            return
         self.p1 = ProcessRunnable(target=main_logic.extract, args=(self.org_apkname, True, False, self))
         self.p1.start()
         self.p2 = ProcessRunnable(target=main_logic.extract, args=(self.mod_apkname, True, True, self))
         self.p2.start()
 
     def onDecompile(self):
+        if self.mainfolder == '':
+            return
         self.diff_files.clear()
         self.diff_listview.clear()
         self.p0 = ProcessRunnable(target=main_logic.decompile, args=(self.mainfolder, self))
