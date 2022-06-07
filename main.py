@@ -268,6 +268,7 @@ class Ui_MainWindow(QtWidgets.QMainWindow):
 
 if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
+    app.setWindowIcon(QtGui.QIcon('android-icon.jpg'))
     mainWin = Ui_MainWindow()
     mainWin.show()
     sys.exit(app.exec_())

@@ -5,7 +5,7 @@ from PyQt5.QtCore import QMetaObject, Qt, Q_ARG
 
 
 def extract(filename, should_d2j, is_mod, obj):
-    os.system('pwd')
+    curr_sys = os.uname().sysname
     prefix = 'org'
     if is_mod:
         prefix = 'mod'
@@ -37,7 +37,10 @@ def extract(filename, should_d2j, is_mod, obj):
             QMetaObject.invokeMethod(obj,
                                      "updateStatus", Qt.QueuedConnection,
                                      Q_ARG(str, 'dex2jar file: {} from {} apk'.format(dex, prefix)), Q_ARG(bool, False))
-            os.system('bash ../d2j-dex2jar.sh --force {}_classes/{} -o {}_classes/jars/{}'.format(prefix, dex, prefix, name + '.zip'))
+            if curr_sys == 'Linux':
+                os.system('bash ../d2j-dex2jar.sh --force {}_classes/{} -o {}_classes/jars/{}'.format(prefix, dex, prefix, name + '.zip'))
+            elif curr_sys == 'Windows':
+                os.system('..\\d2j-dex2jar.bat --force {}_classes\\{} -o {}_classes\\jars\\{}'.format(prefix, dex, prefix, name + '.zip'))
 
     QMetaObject.invokeMethod(obj,
                              "updateStatus", Qt.QueuedConnection,
@@ -52,7 +55,11 @@ def extract(filename, should_d2j, is_mod, obj):
         QMetaObject.invokeMethod(obj,
                                  "updateStatus", Qt.QueuedConnection,
                                  Q_ARG(str, 'unzipping file: ' + zip_class), Q_ARG(bool, False))
-        os.system('unzip -o {} -d {}'.format(class_zip, prefix + '_classes/all_classes/'))
+        if curr_sys == 'Linux':
+            os.system('unzip -o {} -d {}'.format(class_zip, prefix + '_classes/all_classes/'))
+        elif curr_sys == 'Windows':
+            #TODO check if usage is valid
+            os.system('..\\unzip.exe {} -d {}'.format(class_zip, prefix + '_classes\\all_classes\\'))
 
     QMetaObject.invokeMethod(obj,
                              "updateStatus", Qt.QueuedConnection,
@@ -109,6 +116,7 @@ def files_added():
 # compare(100)
 # files_added()
 def copy_diffs(mainfolder, obj):
+    curr_sys = os.uname().sysname
     os.chdir(mainfolder)
     if not os.path.exists('diff'):
         os.mkdir('diff')
@@ -121,8 +129,12 @@ def copy_diffs(mainfolder, obj):
         QMetaObject.invokeMethod(obj,
                                  "updateStatus", Qt.QueuedConnection,
                                  Q_ARG(str, 'copying file: '+file.strip()), Q_ARG(bool, False))
-        os.system('cp {} diff/org/'.format("'"+file.strip()+"'"))
-        os.system('cp {} diff/mod/'.format("'"+file.strip().replace('org_classes', 'mod_classes')+"'"))
+        if curr_sys == 'Linux':
+            os.system('cp {} diff/org/'.format("'"+file.strip()+"'"))
+            os.system('cp {} diff/mod/'.format("'"+file.strip().replace('org_classes', 'mod_classes')+"'"))
+        elif curr_sys == 'Windows':
+            os.system('copy {} diff\\org\\'.format(("'" + file.strip() + "'").replace('/', '\\')))
+            os.system('copy {} diff\\mod\\'.format(("'" + file.strip().replace('org_classes', 'mod_classes') + "'")).replace('/', '\\'))
     diff_org.close()
     QMetaObject.invokeMethod(obj,
                              "updateStatus", Qt.QueuedConnection,
@@ -130,6 +142,7 @@ def copy_diffs(mainfolder, obj):
 
 
 def decompile(mainfolder, obj):
+    curr_sys = os.uname().sysname
     os.chdir(mainfolder)
     if not os.path.exists('diff/org/java'):
         os.makedirs('diff/org/java', exist_ok=True)
@@ -140,8 +153,14 @@ def decompile(mainfolder, obj):
         QMetaObject.invokeMethod(obj,
                                  "updateStatus", Qt.QueuedConnection,
                                  Q_ARG(str, 'decompiling file: '+file.strip()), Q_ARG(bool, False))
-        os.system('java -jar ../jd-cli.jar -od {} {}'.format('diff/org/java', "'"+file.strip()+"'"))
-        os.system('java -jar ../jd-cli.jar -od {} {}'.format('diff/mod/java',"'"+file.strip().replace('org_classes', 'mod_classes')+"'"))
+        if curr_sys == 'Linux':
+            os.system('java -jar ../jd-cli.jar -od {} {}'.format('diff/org/java', "'"+file.strip()+"'"))
+            os.system('java -jar ../jd-cli.jar -od {} {}'.format('diff/mod/java',"'"+file.strip().replace('org_classes', 'mod_classes')+"'"))
+        elif curr_sys == 'Windows':
+            os.system('java -jar ..\\jd-cli.jar -od {} {}'.format('diff\\org\\java', "'" + file.strip().replace('/', '\\') + "'"))
+            os.system('java -jar ..\\jd-cli.jar -od {} {}'.format('diff\\mod\\java',
+                                                                 "'" + (file.strip().replace('org_classes',
+                                                                                            'mod_classes')).replace('/', '\\') + "'"))
     QMetaObject.invokeMethod(obj,
                              "updateStatus", Qt.QueuedConnection,
                              Q_ARG(str, 'DECOMPILE FINISHED'), Q_ARG(bool, True))
