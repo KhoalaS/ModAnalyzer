@@ -158,61 +158,6 @@
      </item>
     </layout>
    </widget>
-   <widget class="QWidget" name="horizontalLayoutWidget_5">
-    <property name="geometry">
-     <rect>
-      <x>210</x>
-      <y>290</y>
-      <width>1031</width>
-      <height>681</height>
-     </rect>
-    </property>
-    <layout class="QHBoxLayout" name="horizontalLayout_6">
-     <property name="sizeConstraint">
-      <enum>QLayout::SetMaximumSize</enum>
-     </property>
-     <property name="leftMargin">
-      <number>5</number>
-     </property>
-     <property name="topMargin">
-      <number>5</number>
-     </property>
-     <property name="rightMargin">
-      <number>5</number>
-     </property>
-     <property name="bottomMargin">
-      <number>5</number>
-     </property>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_5">
-       <item>
-        <widget class="QLabel" name="label_5">
-         <property name="text">
-          <string>Original File</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="org_textbrowser"/>
-       </item>
-      </layout>
-     </item>
-     <item>
-      <layout class="QVBoxLayout" name="verticalLayout_7">
-       <item>
-        <widget class="QLabel" name="label_7">
-         <property name="text">
-          <string>Modded File</string>
-         </property>
-        </widget>
-       </item>
-       <item>
-        <widget class="QTextBrowser" name="mod_textbrowser"/>
-       </item>
-      </layout>
-     </item>
-    </layout>
-   </widget>
    <widget class="QWidget" name="verticalLayoutWidget_4">
     <property name="geometry">
      <rect>
@@ -235,6 +180,34 @@
      </item>
     </layout>
    </widget>
+   <widget class="QWebView" name="webView">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>310</y>
+      <width>1031</width>
+      <height>661</height>
+     </rect>
+    </property>
+    <property name="url">
+     <url>
+      <string>about:blank</string>
+     </url>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_5">
+    <property name="geometry">
+     <rect>
+      <x>210</x>
+      <y>290</y>
+      <width>59</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>File Diff </string>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menubar">
    <property name="geometry">
@@ -248,6 +221,13 @@
   </widget>
   <widget class="QStatusBar" name="statusbar"/>
  </widget>
+ <customwidgets>
+  <customwidget>
+   <class>QWebView</class>
+   <extends>QWidget</extends>
+   <header location="global">QtWebKitWidgets/QWebView</header>
+  </customwidget>
+ </customwidgets>
  <resources/>
  <connections/>
 </ui>

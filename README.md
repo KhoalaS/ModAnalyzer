@@ -1,5 +1,5 @@
 # ModAnalyzer
-This tool aims to help understand how APK files are modified, by showing the user a side by side comparison of original and modified code.
+This tool aims to help understand how APK files are modified, by showing the user a line by line comparison of original and modified code.
 
 ## How does it work?
 A one to one comparison of .smali or .class files is often not feasible due to minor code changes
